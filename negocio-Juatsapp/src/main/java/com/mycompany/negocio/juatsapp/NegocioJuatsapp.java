@@ -5,7 +5,7 @@
 package com.mycompany.negocio.juatsapp;
 
 /**
- * Test 
+ * Retesteo
  * @author eduar
  */
 public class NegocioJuatsapp {
