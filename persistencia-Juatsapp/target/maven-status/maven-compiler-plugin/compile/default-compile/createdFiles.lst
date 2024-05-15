@@ -1,8 +1,11 @@
 DTOs\Chat.class
+interfaces\IChatDAO.class
 daos\ChatDAO.class
+interfaces\IMensajeDAO.class
 com\mycompany\persistencia\juatsapp\PersistenciaJuatsapp.class
 DTOs\Mensaje.class
 DTOs\Usuario.class
+interfaces\IUsuarioDAO.class
 daos\UsuarioDAO.class
 daos\MensajeDAO.class
 persistencia\ConexionBD.class

@@ -1,18 +1,19 @@
 package DTOs;
 
 import java.util.List;
+import org.bson.types.ObjectId;
 
 /**
  * 
  * @author eduar
  */
 public class Chat {
-    private String id;
+    private ObjectId id;
     private String nombreChat;
     private String imagenMiniatura;
     private List<String> participantes; // Lista de IDs de usuarios
 
-    public Chat(String id, String nombreChat, String imagenMiniatura, List<String> participantes) {
+    public Chat(ObjectId id, String nombreChat, String imagenMiniatura, List<String> participantes) {
         this.id = id;
         this.nombreChat = nombreChat;
         this.imagenMiniatura = imagenMiniatura;
@@ -20,11 +21,11 @@ public class Chat {
     }
 
     // Getters y setters
-    public String getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 

@@ -1,20 +1,21 @@
 package DTOs;
 
 import java.util.Date;
+import org.bson.types.ObjectId;
 
 /**
  * 
  * @author eduar
  */
 public class Mensaje {
-    private String id;
-    private String chatId;
-    private String usuarioId;
+    private ObjectId id;
+    private ObjectId chatId;
+    private ObjectId usuarioId;
     private String textoMensaje;
     private Date fechaHora;
     private String imagen;
 
-    public Mensaje(String id, String chatId, String usuarioId, String textoMensaje, Date fechaHora, String imagen) {
+    public Mensaje(ObjectId id, ObjectId chatId, ObjectId usuarioId, String textoMensaje, Date fechaHora, String imagen) {
         this.id = id;
         this.chatId = chatId;
         this.usuarioId = usuarioId;
@@ -24,27 +25,27 @@ public class Mensaje {
     }
 
     // Getters y setters
-    public String getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 
-    public String getChatId() {
+    public ObjectId getChatId() {
         return chatId;
     }
 
-    public void setChatId(String chatId) {
+    public void setChatId(ObjectId chatId) {
         this.chatId = chatId;
     }
 
-    public String getUsuarioId() {
+    public ObjectId getUsuarioId() {
         return usuarioId;
     }
 
-    public void setUsuarioId(String usuarioId) {
+    public void setUsuarioId(String ObjectId) {
         this.usuarioId = usuarioId;
     }
 

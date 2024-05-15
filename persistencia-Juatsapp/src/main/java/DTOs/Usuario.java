@@ -1,26 +1,30 @@
 package DTOs;
 
 import java.util.Date;
+import org.bson.types.ObjectId;
 
 /**
  * 
  * @author eduar
  */
 public class Usuario {
+    private ObjectId id;
     private String telefono;
     private String contrasenaEncriptada;
     private Date fechaNacimiento;
     private String imagenPerfil;
     private String direccion;
     private String sexo;
+    private String nombre;
 
-    public Usuario(String telefono, String contrasenaEncriptada, Date fechaNacimiento, String imagenPerfil, String direccion, String sexo) {
+    public Usuario(String telefono, String contrasenaEncriptada, Date fechaNacimiento, String imagenPerfil, String direccion, String sexo, String nombre) {
         this.telefono = telefono;
         this.contrasenaEncriptada = contrasenaEncriptada;
         this.fechaNacimiento = fechaNacimiento;
         this.imagenPerfil = imagenPerfil;
         this.direccion = direccion;
         this.sexo = sexo;
+        this.nombre=nombre;
     }
 
     // Getters y setters
