@@ -12,25 +12,26 @@ import interfaces.IUsuarioDAO;
 import org.bson.types.ObjectId;
 
 /**
- * 
+ *
  * @author eduar
  */
-public class UsuarioDAO implements IUsuarioDAO{
+public class UsuarioDAO implements IUsuarioDAO {
+
     private MongoCollection<Document> collection;
 
     public UsuarioDAO() {
         MongoDatabase database = persistencia.ConexionBD.getDatabase();
         collection = database.getCollection("usuario");
     }
-    
+
     @Override
     public void insertarUsuario(Usuario usuario) {
         Document doc = new Document("telefono", usuario.getTelefono())
-                               .append("contrasena_encriptada", usuario.getContrasenaEncriptada())
-                               .append("fecha_nacimiento", usuario.getFechaNacimiento())
-                               .append("imagen_perfil", usuario.getImagenPerfil())
-                               .append("direccion", usuario.getDireccion())
-                               .append("sexo", usuario.getSexo());
+                .append("contrasena_encriptada", usuario.getContrasenaEncriptada())
+                .append("fecha_nacimiento", usuario.getFechaNacimiento())
+                .append("imagen_perfil", usuario.getImagenPerfil())
+                .append("direccion", usuario.getDireccion())
+                .append("sexo", usuario.getSexo());
         collection.insertOne(doc);
     }
 
@@ -38,24 +39,24 @@ public class UsuarioDAO implements IUsuarioDAO{
     public Usuario encuentraUsuarioPorTelefono(String telefono) {
         Document doc = collection.find(eq("telefono", telefono)).first();
         return doc != null ? new Usuario(
-            doc.getString("telefono"),
-            doc.getString("contrasena_encriptada"),
-            doc.getDate("fecha_nacimiento"),
-            doc.getString("imagen_perfil"),
-            doc.getString("direccion"),
-            doc.getString("sexo"),
-            doc.getString("nombre")
+                doc.getString("telefono"),
+                doc.getString("nombre"),
+                doc.getString("contrasena_encriptada"),
+                doc.getDate("fecha_nacimiento"),
+                doc.getString("imagen_perfil"),
+                doc.getString("direccion"),
+                doc.getString("sexo")
         ) : null;
     }
-    
+
     @Override
     public UpdateResult actualizarUsuario(Usuario usuario) {
         return collection.updateOne(eq("telefono", usuario.getTelefono()),
-            new Document("$set", new Document("contrasena_encriptada", usuario.getContrasenaEncriptada())
-                                       .append("fecha_nacimiento", usuario.getFechaNacimiento())
-                                       .append("imagen_perfil", usuario.getImagenPerfil())
-                                       .append("direccion", usuario.getDireccion())
-                                       .append("sexo", usuario.getSexo())));
+                new Document("$set", new Document("contrasena_encriptada", usuario.getContrasenaEncriptada())
+                        .append("fecha_nacimiento", usuario.getFechaNacimiento())
+                        .append("imagen_perfil", usuario.getImagenPerfil())
+                        .append("direccion", usuario.getDireccion())
+                        .append("sexo", usuario.getSexo())));
     }
 
     public DeleteResult eliminaUsuario(String telefono) {

@@ -17,7 +17,7 @@ public class Usuario {
     private String sexo;
     private String nombre;
 
-    public Usuario(String telefono, String contrasenaEncriptada, Date fechaNacimiento, String imagenPerfil, String direccion, String sexo, String nombre) {
+    public Usuario(String telefono, String nombre, String contrasenaEncriptada, Date fechaNacimiento, String imagenPerfil, String direccion, String sexo) {
         this.telefono = telefono;
         this.contrasenaEncriptada = contrasenaEncriptada;
         this.fechaNacimiento = fechaNacimiento;
@@ -25,6 +25,10 @@ public class Usuario {
         this.direccion = direccion;
         this.sexo = sexo;
         this.nombre=nombre;
+    }
+    
+    public Usuario() {
+        
     }
 
     // Getters y setters
@@ -75,4 +79,13 @@ public class Usuario {
     public void setSexo(String sexo) {
         this.sexo = sexo;
     }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    
 }
