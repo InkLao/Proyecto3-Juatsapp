@@ -23,7 +23,20 @@ public class Mensaje {
         this.fechaHora = fechaHora;
         this.imagen = imagen;
     }
+    
+    public Mensaje(ObjectId chatId, ObjectId usuarioId, String textoMensaje, Date fechaHora, String imagen) {
+    this.chatId = chatId;
+    this.usuarioId = usuarioId;
+    this.textoMensaje = textoMensaje;
+    this.fechaHora = fechaHora; // Asegúrate de tener este campo correctamente tipado si decides usarlo
+    this.imagen = imagen;
+}
 
+
+    public Mensaje() {
+        
+    }
+    
     // Getters y setters
     public ObjectId getId() {
         return id;
@@ -45,7 +58,7 @@ public class Mensaje {
         return usuarioId;
     }
 
-    public void setUsuarioId(String ObjectId) {
+    public void setUsuarioId(ObjectId usuarioId) {
         this.usuarioId = usuarioId;
     }
 

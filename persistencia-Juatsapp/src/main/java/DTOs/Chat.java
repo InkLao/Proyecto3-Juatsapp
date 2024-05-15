@@ -19,6 +19,10 @@ public class Chat {
         this.imagenMiniatura = imagenMiniatura;
         this.participantes = participantes;
     }
+    
+    public Chat() {
+        
+    }
 
     // Getters y setters
     public ObjectId getId() {
