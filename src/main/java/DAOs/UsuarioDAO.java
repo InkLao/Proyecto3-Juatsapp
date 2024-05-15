@@ -18,7 +18,7 @@ public class UsuarioDAO {
 
     public UsuarioDAO() {
         MongoDatabase database = persistencia.ConexionBD.getDatabase();
-        collection = database.getCollection("usuarios");
+        collection = database.getCollection("usuario");
     }
 
     public void insertaUsuario(Usuario usuario) {

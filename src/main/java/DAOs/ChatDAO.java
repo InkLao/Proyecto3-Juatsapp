@@ -18,7 +18,7 @@ public class ChatDAO {
 
     public ChatDAO() {
         MongoDatabase database = persistencia.ConexionBD.getDatabase();
-        collection = database.getCollection("chats");
+        collection = database.getCollection("chat");
     }
 
     public void insertarChat(Chat chat) {
