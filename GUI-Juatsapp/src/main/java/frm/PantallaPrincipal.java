@@ -4,7 +4,13 @@
  */
 package frm;
 
+import DTOs.Chat;
+import DTOs.Mensaje;
 import DTOs.Usuario;
+import control.ControlChat;
+import control.ControlMensaje;
+import java.util.List;
+import javax.swing.DefaultListModel;
 
 
 
@@ -14,13 +20,41 @@ import DTOs.Usuario;
  */
 public class PantallaPrincipal extends javax.swing.JFrame {
     
-
+     private Usuario usuario;
+    private ControlChat controlChat;
+    private ControlMensaje controlMensaje;
+    private Chat chatSeleccionado;
 
     /**
      * Creates new form PantallaPrincipal
      */
     public PantallaPrincipal(Usuario usuario) {
+        this.usuario = usuario;
+        this.controlChat = new ControlChat();
+        this.controlMensaje = new ControlMensaje();
         initComponents();
+        cargarChats();
+    }
+
+    private void cargarChats() {
+        DefaultListModel<String> model = new DefaultListModel<>();
+        List<Chat> chats = controlChat.obtenerChatsUsuario(usuario.getId());
+        for (Chat chat : chats) {
+            model.addElement(chat.getNombreChat());
+        }
+        listaChats.setModel(model);
+    }
+
+    private void cargarMensajes() {
+        if (chatSeleccionado == null) {
+            return;
+        }
+        DefaultListModel<String> model = new DefaultListModel<>();
+        List<Mensaje> mensajes = controlMensaje.obtenerMensajesPorChatId(chatSeleccionado.getId());
+        for (Mensaje mensaje : mensajes) {
+            model.addElement(mensaje.getTextoMensaje());
+        }
+        listaMensajes.setModel(model);
     }
 
     /**
@@ -33,11 +67,12 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        list1 = new java.awt.List();
         txtMensaje = new javax.swing.JTextField();
         botonEnviar = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jList2 = new javax.swing.JList<>();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jList3 = new javax.swing.JList<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuPerfil = new javax.swing.JMenu();
         menuModificarPerfil = new javax.swing.JMenuItem();
@@ -49,9 +84,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel1.setText("Chats");
 
-        jScrollPane1.setViewportView(jList1);
-
         botonEnviar.setText("Enviar");
+
+        jScrollPane2.setViewportView(jList2);
+
+        jScrollPane3.setViewportView(jList3);
 
         menuPerfil.setText("Perfil");
 
@@ -87,32 +124,33 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(list1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(15, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(botonEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(146, 146, 146))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(botonEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(12, 12, 12))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(153, 153, 153))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(4, 4, 4)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(list1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonEnviar))
@@ -123,24 +161,31 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCerrarSesionActionPerformed
-        // TODO add your handling code here:
+        InicioSesion inicioSesion = new InicioSesion();
+        inicioSesion.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_menuCerrarSesionActionPerformed
 
     private void menuCrearChatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCrearChatActionPerformed
-        // TODO add your handling code here:
+        PantallaCrearChat pantallaCrearChat = new PantallaCrearChat(usuario);
+        pantallaCrearChat.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_menuCrearChatActionPerformed
 
     private void menuModificarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModificarPerfilActionPerformed
-        // TODO add your handling code here:
+        PantallaPerfil pantallaPerfil = new PantallaPerfil(usuario);
+        pantallaPerfil.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_menuModificarPerfilActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonEnviar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList<String> jList1;
+    private javax.swing.JList<String> jList2;
+    private javax.swing.JList<String> jList3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private java.awt.List list1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JMenu menuCerrarSesion;
     private javax.swing.JMenu menuCrearChat;
     private javax.swing.JMenuItem menuModificarPerfil;

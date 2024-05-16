@@ -4,10 +4,14 @@
  */
 package frm;
 
+import DTOs.Usuario;
+import control.ControlUsuario;
 import java.io.File;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import javax.swing.JFileChooser;
-
-
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,13 +19,27 @@ import javax.swing.JFileChooser;
  */
 public class PantallaPerfil extends javax.swing.JFrame {
 
+    private Usuario usuario;
+    private String imagenPerfilPath;
 
     /**
      * Creates new form PantallaPerfil
      */
-    public PantallaPerfil() {
-
+    public PantallaPerfil(Usuario usuario) {
+        this.usuario = usuario;
         initComponents();
+        cargarDatos();
+    }
+
+    private void cargarDatos() {
+        txtTelefono.setText(usuario.getTelefono());
+        txtNombre.setText(usuario.getNombre());
+        campoContraseña.setText("");
+        dpFechaNacimiento.setDate(convertToLocalDate(usuario.getFechaNacimiento()));
+        txtDireccion.setText(usuario.getDireccion());
+        txtSexo.setText(usuario.getSexo());
+        txtImagenPerfil.setText(usuario.getImagenPerfil());
+        imagenPerfilPath = usuario.getImagenPerfil();
     }
 
     /**
@@ -41,7 +59,6 @@ public class PantallaPerfil extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
-        txtContr = new javax.swing.JTextField();
         botonModificar = new javax.swing.JButton();
         botonRegresar = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
@@ -51,11 +68,12 @@ public class PantallaPerfil extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         dpFechaNacimiento = new com.github.lgooddatepicker.components.DatePicker();
+        campoContraseña = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel1.setText("Perfil");
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
 
         jLabel2.setText("Telefono");
 
@@ -66,8 +84,18 @@ public class PantallaPerfil extends javax.swing.JFrame {
         jLabel6.setText("Sexo");
 
         botonModificar.setText("Modificar");
+        botonModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonModificarActionPerformed(evt);
+            }
+        });
 
         botonRegresar.setText("Regresar");
+        botonRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonRegresarActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Nombre");
 
@@ -99,10 +127,6 @@ public class PantallaPerfil extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(dpFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel5)
                                     .addComponent(jLabel6))
@@ -120,13 +144,17 @@ public class PantallaPerfil extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(botonSeleccionarImagen))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtContr, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(campoContraseña)
+                                    .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE))))))
                 .addContainerGap(110, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -149,7 +177,7 @@ public class PantallaPerfil extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtContr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(dpFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -178,20 +206,63 @@ public class PantallaPerfil extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonSeleccionarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSeleccionarImagenActionPerformed
-        // TODO add your handling code here:
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Imágenes", "jpg", "jpeg", "png"));
         int returnValue = fileChooser.showOpenDialog(this);
-        
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            imagenPerfilPath = selectedFile.getAbsolutePath();
+            txtImagenPerfil.setText(imagenPerfilPath);
+        }
     }//GEN-LAST:event_botonSeleccionarImagenActionPerformed
 
+    private void botonRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegresarActionPerformed
+        PantallaPrincipal pantallaPrincipal = new PantallaPrincipal(usuario);
+        pantallaPrincipal.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_botonRegresarActionPerformed
+
+    private void botonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarActionPerformed
+        String telefono = txtTelefono.getText().trim();
+        String nombre = txtNombre.getText().trim();
+        String contrasena = new String(campoContraseña.getPassword());
+        LocalDate fechaNacimientoLocalDate = dpFechaNacimiento.getDate();
+        Date fechaNacimiento = convertToDate(fechaNacimientoLocalDate);
+        String direccion = txtDireccion.getText().trim();
+        String sexo = txtSexo.getText().trim();
+
+        if (telefono.isEmpty() || nombre.isEmpty() || contrasena.isEmpty() || fechaNacimiento == null || direccion.isEmpty() || sexo.isEmpty() || imagenPerfilPath == null) {
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error de modificación de perfil", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        usuario.setTelefono(telefono);
+        usuario.setNombre(nombre);
+        usuario.setContrasenaEncriptada(contrasena); // Aquí deberías encriptar la contraseña
+        usuario.setFechaNacimiento(fechaNacimiento);
+        usuario.setDireccion(direccion);
+        usuario.setSexo(sexo);
+        usuario.setImagenPerfil(imagenPerfilPath);
+
+        ControlUsuario controlUsuario = new ControlUsuario();
+        try {
+            controlUsuario.actualizarUsuario(usuario);
+            JOptionPane.showMessageDialog(this, "Perfil modificado exitosamente.", "Modificación de perfil", JOptionPane.INFORMATION_MESSAGE);
+            PantallaPrincipal pantallaPrincipal = new PantallaPrincipal(usuario);
+            pantallaPrincipal.setVisible(true);
+            this.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al modificar el perfil: " + e.getMessage(), "Error de modificación de perfil", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_botonModificarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonModificar;
     private javax.swing.JButton botonRegresar;
     private javax.swing.JButton botonSeleccionarImagen;
+    private javax.swing.JPasswordField campoContraseña;
     private com.github.lgooddatepicker.components.DatePicker dpFechaNacimiento;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -201,11 +272,25 @@ public class PantallaPerfil extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JTextField txtContr;
     private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtImagenPerfil;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtSexo;
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
+    
+    private Date convertToDate(LocalDate localDate) {
+        if (localDate == null) {
+            return null;
+        }
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+
+    private LocalDate convertToLocalDate(Date date) {
+        if (date == null) {
+            return null;
+        }
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
 }
