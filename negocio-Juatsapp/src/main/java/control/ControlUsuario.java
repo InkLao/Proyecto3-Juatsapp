@@ -2,12 +2,9 @@ package control;
 
 import DTOs.Usuario;
 import daos.UsuarioDAO;
-import org.bson.types.Binary;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Date;
+import org.bson.types.Binary;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
@@ -20,26 +17,15 @@ public class ControlUsuario {
         this.usuarioDAO = new UsuarioDAO();
     }
 
-    public void registrarUsuario(String telefono, String nombre, String contrasenaEncriptada, String imagenPerfilPath, String direccion, String sexo, Date fechaNacimiento) {
-        Usuario usuario = new Usuario();
-        usuario.setTelefono(telefono);
-        usuario.setNombre(nombre);
-        usuario.setContrasenaEncriptada(contrasenaEncriptada);
-        usuario.setDireccion(direccion);
-        usuario.setSexo(sexo);
-        usuario.setFechaNacimiento(fechaNacimiento);
+    public void registrarUsuario(String telefono, String nombre, String contrasena, String direccion, String sexo, Date fechaNacimiento, Binary imagenPerfil) {
+        String contrasenaEncriptada = BCrypt.hashpw(contrasena, BCrypt.gensalt());
+        Usuario usuario = new Usuario(telefono, nombre, contrasenaEncriptada, fechaNacimiento, imagenPerfil, direccion, sexo);
         try {
-            File imagenFile = new File(imagenPerfilPath);
-            FileInputStream fis = new FileInputStream(imagenFile);
-            byte[] imagenBytes = new byte[(int) imagenFile.length()];
-            fis.read(imagenBytes);
-            fis.close();
-            usuario.setImagenPerfil(new Binary(imagenBytes));
             usuarioDAO.insertarUsuario(usuario);
             System.out.println("Usuario registrado exitosamente.");
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Error al registrar usuario: " + e.getMessage());
+            System.out.println("Error al registrar usuario.");
         }
     }
 
@@ -54,6 +40,10 @@ public class ControlUsuario {
     }
 
     public void actualizarUsuario(Usuario usuario) {
+        if (usuario.getContrasenaEncriptada() != null && !usuario.getContrasenaEncriptada().isEmpty()) {
+            String contrasenaEncriptada = BCrypt.hashpw(usuario.getContrasenaEncriptada(), BCrypt.gensalt());
+            usuario.setContrasenaEncriptada(contrasenaEncriptada);
+        }
         try {
             usuarioDAO.actualizarUsuario(usuario);
             System.out.println("Usuario actualizado correctamente.");

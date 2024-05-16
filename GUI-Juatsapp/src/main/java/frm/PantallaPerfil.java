@@ -23,7 +23,6 @@ import org.bson.types.Binary;
 public class PantallaPerfil extends javax.swing.JFrame {
 
     private Usuario usuario;
-    private String imagenPerfilPath;
     private Binary imagenPerfilBinario;
 
     /**
@@ -219,11 +218,10 @@ public class PantallaPerfil extends javax.swing.JFrame {
         int returnValue = fileChooser.showOpenDialog(this);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            imagenPerfilPath = selectedFile.getAbsolutePath();
-            txtImagenPerfil.setText(imagenPerfilPath);
             try {
                 byte[] fileContent = Files.readAllBytes(selectedFile.toPath());
                 imagenPerfilBinario = new Binary(fileContent);
+                txtImagenPerfil.setText(selectedFile.getName());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(this, "Error al leer la imagen de perfil.", "Error", JOptionPane.ERROR_MESSAGE);
             }

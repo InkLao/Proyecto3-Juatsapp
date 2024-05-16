@@ -2,11 +2,14 @@ package frm;
 
 import control.ControlUsuario;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import org.bson.types.Binary;
 
 
 /**
@@ -15,7 +18,7 @@ import javax.swing.JOptionPane;
  */
 public class PantallaRegistro extends javax.swing.JFrame {
 
-    private String imagenPerfilPath;
+    private Binary imagenPerfilBinario;
     
     /**
      * Creates new form PantallaRegistro
@@ -184,7 +187,9 @@ public class PantallaRegistro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonInicioActionPerformed
-
+        InicioSesion is = new InicioSesion();
+        is.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_botonInicioActionPerformed
 
     private void botonRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegistrarActionPerformed
@@ -197,31 +202,37 @@ public class PantallaRegistro extends javax.swing.JFrame {
         String direccion = txtDireccion.getText().trim();
         String sexo = txtSexo.getText().trim();
 
-        if (telefono.isEmpty() || nombre.isEmpty() || contraseña.isEmpty() || fechaNacimiento == null || direccion.isEmpty() || sexo.isEmpty() || imagenPerfilPath == null) {
+        if (telefono.isEmpty() || nombre.isEmpty() || contraseña.isEmpty() || fechaNacimiento == null || direccion.isEmpty() || sexo.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error de registro", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         ControlUsuario controlUsuario = new ControlUsuario();
         try {
-            controlUsuario.registrarUsuario(telefono, nombre, contraseña, imagenPerfilPath, direccion, sexo, fechaNacimiento);
+            controlUsuario.registrarUsuario(telefono, nombre, contraseña, direccion, sexo, fechaNacimiento, imagenPerfilBinario);
             JOptionPane.showMessageDialog(this, "Usuario registrado exitosamente.", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
+            InicioSesion inicioSesion = new InicioSesion();
+            inicioSesion.setVisible(true);
+            this.dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al registrar el usuario: " + e.getMessage(), "Error de registro", JOptionPane.ERROR_MESSAGE);
         }
-
     }//GEN-LAST:event_botonRegistrarActionPerformed
 
     private void botonSeleccionarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSeleccionarImagenActionPerformed
-        // TODO add your handling code here:
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Imágenes", "jpg", "jpeg", "png"));
         int returnValue = fileChooser.showOpenDialog(this);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            imagenPerfilPath = selectedFile.getAbsolutePath();
-            txtImagenPerfil.setText(imagenPerfilPath);
+            try {
+                byte[] fileContent = Files.readAllBytes(selectedFile.toPath());
+                imagenPerfilBinario = new Binary(fileContent);
+                txtImagenPerfil.setText(selectedFile.getName());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Error al leer la imagen de perfil.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_botonSeleccionarImagenActionPerformed
 

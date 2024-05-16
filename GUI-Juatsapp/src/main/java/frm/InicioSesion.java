@@ -121,6 +121,7 @@ public class InicioSesion extends javax.swing.JFrame {
     private void botonRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegistrarActionPerformed
         PantallaRegistro pr = new PantallaRegistro();
         pr.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_botonRegistrarActionPerformed
 
     private void botonIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIniciarActionPerformed
@@ -135,21 +136,12 @@ public class InicioSesion extends javax.swing.JFrame {
         ControlUsuario controlUsuario = new ControlUsuario();
         Usuario usuario = controlUsuario.obtenerUsuarioPorTelefono(telefono);
 
-        if (usuario == null) {
-            JOptionPane.showMessageDialog(this, "Usuario no encontrado.", "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        if (BCrypt.checkpw(contrasena, usuario.getContrasenaEncriptada())) {
-            // Inicio de sesión exitoso
-            JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso.", "Inicio de sesión", JOptionPane.INFORMATION_MESSAGE);
-
-            // Abrir la pantalla principal
+        if (usuario != null && BCrypt.checkpw(contrasena, usuario.getContrasenaEncriptada())) {
             PantallaPrincipal pantallaPrincipal = new PantallaPrincipal(usuario);
             pantallaPrincipal.setVisible(true);
             this.dispose();
         } else {
-            JOptionPane.showMessageDialog(this, "Contraseña incorrecta.", "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Teléfono o contraseña incorrectos.", "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_botonIniciarActionPerformed
 
