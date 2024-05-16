@@ -20,7 +20,7 @@ import javax.swing.DefaultListModel;
  */
 public class PantallaPrincipal extends javax.swing.JFrame {
     
-     private Usuario usuario;
+    private Usuario usuario;
     private ControlChat controlChat;
     private ControlMensaje controlMensaje;
     private Chat chatSeleccionado;
@@ -57,6 +57,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         listaMensajes.setModel(model);
     }
 
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -70,9 +71,9 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         txtMensaje = new javax.swing.JTextField();
         botonEnviar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
+        listaMensajes = new javax.swing.JList<>();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jList3 = new javax.swing.JList<>();
+        listaChats = new javax.swing.JList<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuPerfil = new javax.swing.JMenu();
         menuModificarPerfil = new javax.swing.JMenuItem();
@@ -86,9 +87,14 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
         botonEnviar.setText("Enviar");
 
-        jScrollPane2.setViewportView(jList2);
+        jScrollPane2.setViewportView(listaMensajes);
 
-        jScrollPane3.setViewportView(jList3);
+        listaChats.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listaChatsValueChanged(evt);
+            }
+        });
+        jScrollPane3.setViewportView(listaChats);
 
         menuPerfil.setText("Perfil");
 
@@ -178,14 +184,20 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_menuModificarPerfilActionPerformed
 
+    private void listaChatsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaChatsValueChanged
+        String chatNombre = listaChats.getSelectedValue();
+        chatSeleccionado = controlChat.buscarChatPorNombre(chatNombre);
+        cargarMensajes();
+    }//GEN-LAST:event_listaChatsValueChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonEnviar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList<String> jList2;
-    private javax.swing.JList<String> jList3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JList<String> listaChats;
+    private javax.swing.JList<String> listaMensajes;
     private javax.swing.JMenu menuCerrarSesion;
     private javax.swing.JMenu menuCrearChat;
     private javax.swing.JMenuItem menuModificarPerfil;

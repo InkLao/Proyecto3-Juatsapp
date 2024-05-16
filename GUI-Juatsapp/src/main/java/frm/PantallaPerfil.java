@@ -7,11 +7,14 @@ package frm;
 import DTOs.Usuario;
 import control.ControlUsuario;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import org.bson.types.Binary;
 
 /**
  *
@@ -21,6 +24,7 @@ public class PantallaPerfil extends javax.swing.JFrame {
 
     private Usuario usuario;
     private String imagenPerfilPath;
+    private Binary imagenPerfilBinario;
 
     /**
      * Creates new form PantallaPerfil
@@ -38,9 +42,12 @@ public class PantallaPerfil extends javax.swing.JFrame {
         dpFechaNacimiento.setDate(convertToLocalDate(usuario.getFechaNacimiento()));
         txtDireccion.setText(usuario.getDireccion());
         txtSexo.setText(usuario.getSexo());
-        txtImagenPerfil.setText(usuario.getImagenPerfil());
-        imagenPerfilPath = usuario.getImagenPerfil();
+        if (usuario.getImagenPerfil() != null) {
+            imagenPerfilBinario = usuario.getImagenPerfil();
+            txtImagenPerfil.setText("Imagen seleccionada");
+        }
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -214,6 +221,12 @@ public class PantallaPerfil extends javax.swing.JFrame {
             File selectedFile = fileChooser.getSelectedFile();
             imagenPerfilPath = selectedFile.getAbsolutePath();
             txtImagenPerfil.setText(imagenPerfilPath);
+            try {
+                byte[] fileContent = Files.readAllBytes(selectedFile.toPath());
+                imagenPerfilBinario = new Binary(fileContent);
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Error al leer la imagen de perfil.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_botonSeleccionarImagenActionPerformed
 
@@ -232,7 +245,7 @@ public class PantallaPerfil extends javax.swing.JFrame {
         String direccion = txtDireccion.getText().trim();
         String sexo = txtSexo.getText().trim();
 
-        if (telefono.isEmpty() || nombre.isEmpty() || contrasena.isEmpty() || fechaNacimiento == null || direccion.isEmpty() || sexo.isEmpty() || imagenPerfilPath == null) {
+        if (telefono.isEmpty() || nombre.isEmpty() || contrasena.isEmpty() || fechaNacimiento == null || direccion.isEmpty() || sexo.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error de modificación de perfil", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -243,7 +256,7 @@ public class PantallaPerfil extends javax.swing.JFrame {
         usuario.setFechaNacimiento(fechaNacimiento);
         usuario.setDireccion(direccion);
         usuario.setSexo(sexo);
-        usuario.setImagenPerfil(imagenPerfilPath);
+        usuario.setImagenPerfil(imagenPerfilBinario);
 
         ControlUsuario controlUsuario = new ControlUsuario();
         try {
