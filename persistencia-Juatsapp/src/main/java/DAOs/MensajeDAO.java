@@ -26,15 +26,19 @@ public class MensajeDAO {
     }
 
     public void insertarMensaje(Mensaje mensaje) {
-        Document doc = new Document()
-            .append("chat_id", mensaje.getChatId()) 
-            .append("usuario_id", mensaje.getUsuarioId()) 
-            .append("texto_mensaje", mensaje.getTextoMensaje())
-            .append("fecha_hora", mensaje.getFechaHora())
-            .append("imagen", mensaje.getImagen());
-        collection.insertOne(doc);
-        System.out.println("Mensaje insertado correctamente.");
+    if (mensaje.getFechaHora() == null) {
+        mensaje.setFechaHora(new Date()); // Establecer la fecha actual si es nula
     }
+    Document doc = new Document()
+        .append("chat_id", mensaje.getChatId()) 
+        .append("usuario_id", mensaje.getUsuarioId()) 
+        .append("texto_mensaje", mensaje.getTextoMensaje())
+        .append("fecha_hora", mensaje.getFechaHora())
+        .append("imagen", mensaje.getImagen());
+    collection.insertOne(doc);
+    System.out.println("Mensaje insertado correctamente.");
+}
+
 
 //    public List<Mensaje> obtenerMensajesPorChatId(ObjectId chatId) {
 //        List<Mensaje> mensajes = new ArrayList<>();
@@ -72,5 +76,6 @@ public class MensajeDAO {
     }
     return mensajes;
 }
+
 
 }

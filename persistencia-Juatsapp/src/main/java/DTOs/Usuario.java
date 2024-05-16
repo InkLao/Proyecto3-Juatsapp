@@ -29,6 +29,19 @@ public class Usuario {
         this.nombre = nombre;
     }
 
+    public Usuario(ObjectId id, String telefono, String nombre, String contrasenaEncriptada, Date fechaNacimiento, Binary imagenPerfil, String direccion, String sexo) {
+        this.id = id;
+        this.telefono = telefono;
+        this.contrasenaEncriptada = contrasenaEncriptada;
+        this.fechaNacimiento = fechaNacimiento;
+        this.imagenPerfil = imagenPerfil;
+        this.direccion = direccion;
+        this.sexo = sexo;
+        this.nombre = nombre;
+    }
+    
+    
+
     public Usuario() {
 
     }

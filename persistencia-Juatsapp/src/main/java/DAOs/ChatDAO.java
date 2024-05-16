@@ -60,7 +60,8 @@ public class ChatDAO implements IChatDAO {
     public DeleteResult eliminarChat(ObjectId id) {
         return collection.deleteOne(eq("_id", id));
     }
-
+    
+    @Override
     public List<Chat> obtenerChatsPorParticipante(String participanteId) {
         List<Chat> chats = new ArrayList<>();
         List<Document> docs = collection.find(in("participantes", participanteId)).into(new ArrayList<>());

@@ -5,22 +5,23 @@ import DTOs.Mensaje;
 import DTOs.Usuario;
 import control.ControlChat;
 import control.ControlMensaje;
+import control.ControlUsuario;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
-
-
 
 /**
  *
  * @author eduar
  */
 public class PantallaPrincipal extends javax.swing.JFrame {
-    
+
     private Usuario usuario;
     private ControlChat controlChat;
     private ControlMensaje controlMensaje;
-    
+    private ControlUsuario controlUsuario;
+
     /**
      * Creates new form PantallaPrincipal
      */
@@ -28,6 +29,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         this.usuario = usuario;
         this.controlChat = new ControlChat();
         this.controlMensaje = new ControlMensaje();
+        this.controlUsuario = new ControlUsuario();
         initComponents();
         cargarChats();
     }
@@ -44,8 +46,13 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private void cargarMensajes(Chat chat) {
         DefaultListModel<String> model = new DefaultListModel<>();
         List<Mensaje> mensajes = controlMensaje.obtenerMensajesChat(chat.getId());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (Mensaje mensaje : mensajes) {
-            model.addElement(mensaje.getTextoMensaje());
+            Usuario remitente = controlUsuario.obtenerUsuarioPorId(mensaje.getUsuarioId());
+            String remitenteNombre = remitente != null ? remitente.getNombre() : "Desconocido";
+            String fechaHora = mensaje.getFechaHora() != null ? sdf.format(mensaje.getFechaHora()) : "Fecha desconocida";
+            String texto = String.format("%s [%s]: %s", remitenteNombre, fechaHora, mensaje.getTextoMensaje());
+            model.addElement(texto);
         }
         listaMensajes.setModel(model);
     }
@@ -252,6 +259,5 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu menuPerfil;
     private javax.swing.JTextField txtMensaje;
     // End of variables declaration//GEN-END:variables
-
 
 }

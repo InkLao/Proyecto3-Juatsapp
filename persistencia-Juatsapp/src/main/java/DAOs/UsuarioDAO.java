@@ -64,4 +64,19 @@ public class UsuarioDAO implements IUsuarioDAO {
     public DeleteResult eliminaUsuario(String telefono) {
         return collection.deleteOne(eq("telefono", telefono));
     }
+    
+    public Usuario encuentraUsuarioPorId(ObjectId id) {
+    Document doc = collection.find(eq("_id", id)).first();
+    return doc != null ? new Usuario(
+            doc.getObjectId("_id"),
+            doc.getString("telefono"),
+            doc.getString("nombre"),
+            doc.getString("contrasena_encriptada"),
+            doc.getDate("fecha_nacimiento"),
+            doc.get("imagen_perfil", Binary.class),
+            doc.getString("direccion"),
+            doc.getString("sexo")
+    ) : null;
+}
+
 }

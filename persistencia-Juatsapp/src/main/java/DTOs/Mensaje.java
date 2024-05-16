@@ -25,13 +25,12 @@ public class Mensaje {
     }
     
     public Mensaje(ObjectId chatId, ObjectId usuarioId, String textoMensaje, Date fechaHora, String imagen) {
-    this.chatId = chatId;
-    this.usuarioId = usuarioId;
-    this.textoMensaje = textoMensaje;
-    this.fechaHora = fechaHora; // Asegúrate de tener este campo correctamente tipado si decides usarlo
-    this.imagen = imagen;
-}
-
+        this.chatId = chatId;
+        this.usuarioId = usuarioId;
+        this.textoMensaje = textoMensaje;
+        this.fechaHora = fechaHora;
+        this.imagen = imagen;
+    }
 
     public Mensaje() {
         
