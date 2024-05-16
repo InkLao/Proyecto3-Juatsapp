@@ -1,11 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package control;
 
 import DTOs.Usuario;
 import daos.UsuarioDAO;
+import org.bson.types.Binary;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Date;
 
 /**
  *
@@ -18,20 +20,26 @@ public class ControlUsuario {
         this.usuarioDAO = new UsuarioDAO();
     }
 
-    public void registrarUsuario(String telefono, String nombre, String contrasenaEncriptada, String imagenPerfil, String direccion, String sexo) {
+    public void registrarUsuario(String telefono, String nombre, String contrasenaEncriptada, String imagenPerfilPath, String direccion, String sexo, Date fechaNacimiento) {
         Usuario usuario = new Usuario();
         usuario.setTelefono(telefono);
         usuario.setNombre(nombre);
         usuario.setContrasenaEncriptada(contrasenaEncriptada);
-        usuario.setImagenPerfil(imagenPerfil);
         usuario.setDireccion(direccion);
         usuario.setSexo(sexo);
+        usuario.setFechaNacimiento(fechaNacimiento);
         try {
+            File imagenFile = new File(imagenPerfilPath);
+            FileInputStream fis = new FileInputStream(imagenFile);
+            byte[] imagenBytes = new byte[(int) imagenFile.length()];
+            fis.read(imagenBytes);
+            fis.close();
+            usuario.setImagenPerfil(new Binary(imagenBytes));
             usuarioDAO.insertarUsuario(usuario);
             System.out.println("Usuario registrado exitosamente.");
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Error al registrar usuario.");
+            System.out.println("Error al registrar usuario: " + e.getMessage());
         }
     }
 

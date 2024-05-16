@@ -6,10 +6,10 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Updates.set;
-import interfaces.IUsuarioDAO;
+import org.bson.types.Binary;
 import org.bson.types.ObjectId;
+import static com.mongodb.client.model.Filters.eq;
+import interfaces.IUsuarioDAO;
 
 /**
  *
@@ -31,7 +31,8 @@ public class UsuarioDAO implements IUsuarioDAO {
                 .append("fecha_nacimiento", usuario.getFechaNacimiento())
                 .append("imagen_perfil", usuario.getImagenPerfil())
                 .append("direccion", usuario.getDireccion())
-                .append("sexo", usuario.getSexo());
+                .append("sexo", usuario.getSexo())
+                .append("nombre", usuario.getNombre());
         collection.insertOne(doc);
     }
 
@@ -43,7 +44,7 @@ public class UsuarioDAO implements IUsuarioDAO {
                 doc.getString("nombre"),
                 doc.getString("contrasena_encriptada"),
                 doc.getDate("fecha_nacimiento"),
-                doc.getString("imagen_perfil"),
+                doc.get("imagen_perfil", Binary.class),
                 doc.getString("direccion"),
                 doc.getString("sexo")
         ) : null;
@@ -56,11 +57,11 @@ public class UsuarioDAO implements IUsuarioDAO {
                         .append("fecha_nacimiento", usuario.getFechaNacimiento())
                         .append("imagen_perfil", usuario.getImagenPerfil())
                         .append("direccion", usuario.getDireccion())
-                        .append("sexo", usuario.getSexo())));
+                        .append("sexo", usuario.getSexo())
+                        .append("nombre", usuario.getNombre())));
     }
 
     public DeleteResult eliminaUsuario(String telefono) {
         return collection.deleteOne(eq("telefono", telefono));
     }
-
 }

@@ -1,10 +1,12 @@
 package DTOs;
 
-import java.util.Date;
+import org.bson.types.Binary;
 import org.bson.types.ObjectId;
 
+import java.util.Date;
+
 /**
- * 
+ *
  * @author eduar
  */
 public class Usuario {
@@ -12,23 +14,23 @@ public class Usuario {
     private String telefono;
     private String contrasenaEncriptada;
     private Date fechaNacimiento;
-    private String imagenPerfil;
+    private Binary imagenPerfil; // Cambiado a Binary
     private String direccion;
     private String sexo;
     private String nombre;
 
-    public Usuario(String telefono, String nombre, String contrasenaEncriptada, Date fechaNacimiento, String imagenPerfil, String direccion, String sexo) {
+    public Usuario(String telefono, String nombre, String contrasenaEncriptada, Date fechaNacimiento, Binary imagenPerfil, String direccion, String sexo) {
         this.telefono = telefono;
         this.contrasenaEncriptada = contrasenaEncriptada;
         this.fechaNacimiento = fechaNacimiento;
         this.imagenPerfil = imagenPerfil;
         this.direccion = direccion;
         this.sexo = sexo;
-        this.nombre=nombre;
+        this.nombre = nombre;
     }
-    
+
     public Usuario() {
-        
+
     }
 
     // Getters y setters
@@ -56,11 +58,11 @@ public class Usuario {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getImagenPerfil() {
+    public Binary getImagenPerfil() {
         return imagenPerfil;
     }
 
-    public void setImagenPerfil(String imagenPerfil) {
+    public void setImagenPerfil(Binary imagenPerfil) {
         this.imagenPerfil = imagenPerfil;
     }
 
@@ -87,5 +89,4 @@ public class Usuario {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
 }
