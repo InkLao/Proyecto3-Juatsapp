@@ -38,7 +38,7 @@
                           <Component id="txtNombreChat" alignment="0" min="-2" pref="194" max="-2" attributes="0"/>
                           <Component id="txtParticipantes" alignment="0" min="-2" pref="194" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="txtImagen" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtImagenChat" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                               <Component id="botonInsertarImagen" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -53,7 +53,7 @@
                               <EmptySpace min="-2" pref="115" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <Component id="botonCrear" min="-2" max="-2" attributes="0"/>
+                              <Component id="botonCrearChat" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -80,12 +80,12 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtImagen" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtImagenChat" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="botonInsertarImagen" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="51" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="botonCrear" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="botonCrearChat" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="botonRegresar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
@@ -102,7 +102,7 @@
         <Property name="text" type="java.lang.String" value="Crear Chat"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtImagen">
+    <Component class="javax.swing.JTextField" name="txtImagenChat">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
@@ -123,12 +123,12 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtParticipantes">
     </Component>
-    <Component class="javax.swing.JButton" name="botonCrear">
+    <Component class="javax.swing.JButton" name="botonCrearChat">
       <Properties>
         <Property name="text" type="java.lang.String" value="Crear Chat"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonCrearActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonCrearChatActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="botonRegresar">

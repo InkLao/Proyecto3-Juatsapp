@@ -7,6 +7,7 @@ import control.ControlChat;
 import control.ControlMensaje;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 
 
@@ -19,8 +20,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private Usuario usuario;
     private ControlChat controlChat;
     private ControlMensaje controlMensaje;
-    private Chat chatSeleccionado;
-
+    
     /**
      * Creates new form PantallaPrincipal
      */
@@ -34,25 +34,21 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     private void cargarChats() {
         DefaultListModel<String> model = new DefaultListModel<>();
-        List<Chat> chats = controlChat.obtenerChatsUsuario(usuario.getId());
+        List<Chat> chats = controlChat.obtenerChatsUsuario(usuario.getTelefono());
         for (Chat chat : chats) {
             model.addElement(chat.getNombreChat());
         }
         listaChats.setModel(model);
     }
 
-    private void cargarMensajes() {
-        if (chatSeleccionado == null) {
-            return;
-        }
+    private void cargarMensajes(Chat chat) {
         DefaultListModel<String> model = new DefaultListModel<>();
-        List<Mensaje> mensajes = controlMensaje.obtenerMensajesPorChatId(chatSeleccionado.getId());
+        List<Mensaje> mensajes = controlMensaje.obtenerMensajesChat(chat.getId());
         for (Mensaje mensaje : mensajes) {
             model.addElement(mensaje.getTextoMensaje());
         }
         listaMensajes.setModel(model);
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -82,6 +78,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         jLabel1.setText("Chats");
 
         botonEnviar.setText("Enviar");
+        botonEnviar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonEnviarActionPerformed(evt);
+            }
+        });
 
         jScrollPane2.setViewportView(listaMensajes);
 
@@ -105,6 +106,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         jMenuBar1.add(menuPerfil);
 
         menuCrearChat.setText("Crear Chat");
+        menuCrearChat.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuCrearChatMouseClicked(evt);
+            }
+        });
         menuCrearChat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuCrearChatActionPerformed(evt);
@@ -113,6 +119,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         jMenuBar1.add(menuCrearChat);
 
         menuCerrarSesion.setText("Cerrar Sesión");
+        menuCerrarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuCerrarSesionMouseClicked(evt);
+            }
+        });
         menuCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuCerrarSesionActionPerformed(evt);
@@ -181,10 +192,51 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_menuModificarPerfilActionPerformed
 
     private void listaChatsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaChatsValueChanged
-        String chatNombre = listaChats.getSelectedValue();
-        chatSeleccionado = controlChat.buscarChatPorNombre(chatNombre);
-        cargarMensajes();
+        if (!evt.getValueIsAdjusting()) {
+            String chatNombre = listaChats.getSelectedValue();
+            if (chatNombre != null) {
+                Chat chat = controlChat.buscarChatPorNombre(chatNombre);
+                if (chat != null) {
+                    cargarMensajes(chat);
+                }
+            }
+        }
     }//GEN-LAST:event_listaChatsValueChanged
+
+    private void menuCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCerrarSesionMouseClicked
+        InicioSesion inicioSesion = new InicioSesion();
+        inicioSesion.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_menuCerrarSesionMouseClicked
+
+    private void menuCrearChatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCrearChatMouseClicked
+        PantallaCrearChat pantallaCrearChat = new PantallaCrearChat(usuario);
+        pantallaCrearChat.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_menuCrearChatMouseClicked
+
+    private void botonEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEnviarActionPerformed
+        String mensajeTexto = txtMensaje.getText().trim();
+        if (mensajeTexto.isEmpty()) {
+            return;
+        }
+
+        String chatNombre = listaChats.getSelectedValue();
+        if (chatNombre == null) {
+            JOptionPane.showMessageDialog(this, "Selecciona un chat primero.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Chat chat = controlChat.buscarChatPorNombre(chatNombre);
+        if (chat == null) {
+            JOptionPane.showMessageDialog(this, "Chat no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        controlMensaje.enviarMensaje(chat.getId(), usuario.getId(), mensajeTexto, null);
+        txtMensaje.setText("");
+        cargarMensajes(chat);
+    }//GEN-LAST:event_botonEnviarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonEnviar;

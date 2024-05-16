@@ -3,13 +3,14 @@ package control;
 import DTOs.Chat;
 import daos.ChatDAO;
 import java.util.List;
-import org.bson.types.ObjectId;
+import java.util.stream.Collectors;
 
 /**
  *
  * @author eduar
  */
 public class ControlChat {
+
     private ChatDAO chatDAO;
 
     public ControlChat() {
@@ -40,7 +41,13 @@ public class ControlChat {
         }
     }
 
-    public List<Chat> obtenerChatsUsuario(ObjectId usuarioId) {
-        return chatDAO.obtenerChatsPorUsuarioId(usuarioId);
+    public List<Chat> obtenerChatsUsuario(String usuarioId) {
+        try {
+            return chatDAO.obtenerChatsPorParticipante(usuarioId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error al obtener los chats del usuario.");
+            return null;
+        }
     }
 }

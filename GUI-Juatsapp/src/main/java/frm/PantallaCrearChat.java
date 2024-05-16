@@ -39,13 +39,13 @@ public class PantallaCrearChat extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        txtImagen = new javax.swing.JTextField();
+        txtImagenChat = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txtNombreChat = new javax.swing.JTextField();
         txtParticipantes = new javax.swing.JTextField();
-        botonCrear = new javax.swing.JButton();
+        botonCrearChat = new javax.swing.JButton();
         botonRegresar = new javax.swing.JButton();
         botonInsertarImagen = new javax.swing.JButton();
 
@@ -60,10 +60,10 @@ public class PantallaCrearChat extends javax.swing.JFrame {
 
         jLabel4.setText("Imagen");
 
-        botonCrear.setText("Crear Chat");
-        botonCrear.addActionListener(new java.awt.event.ActionListener() {
+        botonCrearChat.setText("Crear Chat");
+        botonCrearChat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonCrearActionPerformed(evt);
+                botonCrearChatActionPerformed(evt);
             }
         });
 
@@ -99,7 +99,7 @@ public class PantallaCrearChat extends javax.swing.JFrame {
                             .addComponent(txtNombreChat, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtParticipantes, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtImagenChat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(31, 31, 31)
                                 .addComponent(botonInsertarImagen)))
                         .addContainerGap())
@@ -110,7 +110,7 @@ public class PantallaCrearChat extends javax.swing.JFrame {
                                 .addComponent(jLabel1)
                                 .addGap(115, 115, 115))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(botonCrear)
+                                .addComponent(botonCrearChat)
                                 .addGap(64, 64, 64))))))
         );
         layout.setVerticalGroup(
@@ -129,11 +129,11 @@ public class PantallaCrearChat extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txtImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtImagenChat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonInsertarImagen))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonCrear)
+                    .addComponent(botonCrearChat)
                     .addComponent(botonRegresar))
                 .addGap(41, 41, 41))
         );
@@ -149,7 +149,7 @@ public class PantallaCrearChat extends javax.swing.JFrame {
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             imagenChatPath = selectedFile.getAbsolutePath();
-            txtImagen.setText(imagenChatPath);
+            txtImagenChat.setText(imagenChatPath);
         }
     }//GEN-LAST:event_botonInsertarImagenActionPerformed
 
@@ -159,18 +159,20 @@ public class PantallaCrearChat extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_botonRegresarActionPerformed
 
-    private void botonCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCrearActionPerformed
+    private void botonCrearChatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCrearChatActionPerformed
 String nombreChat = txtNombreChat.getText().trim();
-        String participantesStr = txtParticipantes.getText().trim();
-        String[] participantesArray = participantesStr.split(",");
-        List<String> participantes = new ArrayList<>();
-        for (String participante : participantesArray) {
-            participantes.add(participante.trim());
-        }
+        String participantesTexto = txtParticipantes.getText().trim();
+        String imagenChatPath = txtImagenChat.getText().trim();
 
-        if (nombreChat.isEmpty() || participantes.isEmpty()) {
+        if (nombreChat.isEmpty() || participantesTexto.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error de creación de chat", JOptionPane.ERROR_MESSAGE);
             return;
+        }
+
+        List<String> participantes = new ArrayList<>();
+        participantes.add(usuario.getTelefono());
+        for (String participante : participantesTexto.split(",")) {
+            participantes.add(participante.trim());
         }
 
         ControlChat controlChat = new ControlChat();
@@ -183,18 +185,18 @@ String nombreChat = txtNombreChat.getText().trim();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al crear el chat: " + e.getMessage(), "Error de creación de chat", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_botonCrearActionPerformed
+    }//GEN-LAST:event_botonCrearChatActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botonCrear;
+    private javax.swing.JButton botonCrearChat;
     private javax.swing.JButton botonInsertarImagen;
     private javax.swing.JButton botonRegresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField txtImagen;
+    private javax.swing.JTextField txtImagenChat;
     private javax.swing.JTextField txtNombreChat;
     private javax.swing.JTextField txtParticipantes;
     // End of variables declaration//GEN-END:variables

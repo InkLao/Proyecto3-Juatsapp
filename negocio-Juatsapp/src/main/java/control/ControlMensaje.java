@@ -31,7 +31,11 @@ public class ControlMensaje {
         }
     }
 
-    public List<Mensaje> obtenerMensajesPorChatId(ObjectId chatId) {
+//    public List<Mensaje> obtenerMensajesPorChatId(ObjectId chatId) {
+//        return mensajeDAO.obtenerMensajesPorChatId(chatId);
+//    }
+    
+    public List<Mensaje> obtenerMensajesChat(ObjectId chatId) {
         return mensajeDAO.obtenerMensajesPorChatId(chatId);
     }
 }

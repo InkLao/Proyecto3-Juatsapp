@@ -36,23 +36,41 @@ public class MensajeDAO {
         System.out.println("Mensaje insertado correctamente.");
     }
 
-    public List<Mensaje> obtenerMensajesPorChatId(ObjectId chatId) {
-        List<Mensaje> mensajes = new ArrayList<>();
-        for (Document doc : collection.find(eq("chat_id", chatId))) {
-            ObjectId id = doc.getObjectId("_id");
-            ObjectId chatIdDoc = doc.getObjectId("chat_id");
-            ObjectId usuarioId = doc.getObjectId("usuario_id");
-            String textoMensaje = doc.getString("texto_mensaje");
-            Date fechaHora = doc.getDate("fecha_hora");
-            String imagen = doc.getString("imagen");
-            mensajes.add(new Mensaje(id, chatIdDoc, usuarioId, textoMensaje, fechaHora, imagen));
-        }
-        return mensajes;
-    }
+//    public List<Mensaje> obtenerMensajesPorChatId(ObjectId chatId) {
+//        List<Mensaje> mensajes = new ArrayList<>();
+//        for (Document doc : collection.find(eq("chat_id", chatId))) {
+//            ObjectId id = doc.getObjectId("_id");
+//            ObjectId chatIdDoc = doc.getObjectId("chat_id");
+//            ObjectId usuarioId = doc.getObjectId("usuario_id");
+//            String textoMensaje = doc.getString("texto_mensaje");
+//            Date fechaHora = doc.getDate("fecha_hora");
+//            String imagen = doc.getString("imagen");
+//            mensajes.add(new Mensaje(id, chatIdDoc, usuarioId, textoMensaje, fechaHora, imagen));
+//        }
+//        return mensajes;
+//    }
 
     public DeleteResult eliminarMensaje(ObjectId id) {
         DeleteResult result = collection.deleteOne(eq("_id", id));
         System.out.println("Mensaje eliminado correctamente.");
         return result;
     }
+    
+    public List<Mensaje> obtenerMensajesPorChatId(ObjectId chatId) {
+    List<Mensaje> mensajes = new ArrayList<>();
+    List<Document> docs = collection.find(eq("chat_id", chatId)).into(new ArrayList<>());
+    for (Document doc : docs) {
+        Mensaje mensaje = new Mensaje(
+            doc.getObjectId("_id"),
+            doc.getObjectId("chat_id"),
+            doc.getObjectId("usuario_id"),
+            doc.getString("texto_mensaje"),
+            doc.getDate("fecha_hora"),
+            doc.getString("imagen")
+        );
+        mensajes.add(mensaje);
+    }
+    return mensajes;
+}
+
 }
