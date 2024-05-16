@@ -3,6 +3,7 @@ package control;
 import DTOs.Chat;
 import daos.ChatDAO;
 import java.util.List;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -37,5 +38,9 @@ public class ControlChat {
             System.out.println("Error al buscar el chat por nombre.");
             return null;
         }
+    }
+
+    public List<Chat> obtenerChatsUsuario(ObjectId usuarioId) {
+        return chatDAO.obtenerChatsPorUsuarioId(usuarioId);
     }
 }

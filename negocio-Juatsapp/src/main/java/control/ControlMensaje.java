@@ -3,6 +3,7 @@ package control;
 import DTOs.Mensaje;
 import daos.MensajeDAO;
 import org.bson.types.ObjectId;
+import java.util.List;
 
 /**
  *
@@ -28,5 +29,9 @@ public class ControlMensaje {
             e.printStackTrace();
             System.out.println("Error al enviar mensaje.");
         }
+    }
+
+    public List<Mensaje> obtenerMensajesPorChatId(ObjectId chatId) {
+        return mensajeDAO.obtenerMensajesPorChatId(chatId);
     }
 }

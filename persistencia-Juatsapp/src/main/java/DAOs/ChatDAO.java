@@ -3,21 +3,21 @@ package daos;
 import DTOs.Chat;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.result.DeleteResult;
-import com.mongodb.client.result.UpdateResult;
+import com.mongodb.client.model.Filters;
+import java.util.ArrayList;
+import java.util.List;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import static com.mongodb.client.model.Filters.eq;
-import interfaces.IChatDAO;
-import java.util.List;
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 import java.util.stream.Collectors;
 
 /**
- * No tiene sentido
  *
  * @author eduar
  */
-public class ChatDAO implements IChatDAO {
+public class ChatDAO {
 
     private MongoCollection<Document> collection;
 
@@ -26,7 +26,6 @@ public class ChatDAO implements IChatDAO {
         collection = database.getCollection("chats");
     }
 
-    @Override
     public void insertarChat(Chat chat) {
         Document doc = new Document("_id", new ObjectId())
                 .append("nombre_chat", chat.getNombreChat())
@@ -35,7 +34,6 @@ public class ChatDAO implements IChatDAO {
         collection.insertOne(doc);
     }
 
-    @Override
     public Chat encontrarChatPorNombre(String nombreChat) {
         Document doc = collection.find(eq("nombre_chat", nombreChat)).first();
         if (doc != null) {
@@ -50,8 +48,20 @@ public class ChatDAO implements IChatDAO {
         return null;
     }
 
+    public List<Chat> obtenerChatsPorUsuarioId(ObjectId usuarioId) {
+        List<Chat> chats = new ArrayList<>();
+        for (Document doc : collection.find(Filters.in("participantes", usuarioId))) {
+            ObjectId id = doc.getObjectId("_id");
+            String nombre = doc.getString("nombre_chat");
+            String imagenMiniatura = doc.getString("imagen_miniatura");
+            List<String> participantes = doc.getList("participantes", ObjectId.class).stream()
+                                            .map(ObjectId::toString)
+                                            .collect(Collectors.toList());
+            chats.add(new Chat(id, nombre, imagenMiniatura, participantes));
+        }
+        return chats;
+    }
 
-    @Override
     public UpdateResult actualizarChat(Chat chat) {
         return collection.updateOne(eq("_id", chat.getId()),
                 new Document("$set", new Document("nombre_chat", chat.getNombreChat())
@@ -59,7 +69,6 @@ public class ChatDAO implements IChatDAO {
                         .append("participantes", chat.getParticipantes())));
     }
 
-    @Override
     public DeleteResult eliminarChat(ObjectId id) {
         return collection.deleteOne(eq("_id", id));
     }

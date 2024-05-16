@@ -1,5 +1,10 @@
 package frm;
 
+import DTOs.Usuario;
+import control.ControlUsuario;
+import javax.swing.JOptionPane;
+import org.mindrot.jbcrypt.BCrypt;
+
 /**
  *
  * @author eduar
@@ -119,7 +124,33 @@ public class InicioSesion extends javax.swing.JFrame {
     }//GEN-LAST:event_botonRegistrarActionPerformed
 
     private void botonIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIniciarActionPerformed
+        String telefono = txtTelefono.getText().trim();
+        String contrasena = new String(campoContraseña.getPassword());
 
+        if (telefono.isEmpty() || contrasena.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        ControlUsuario controlUsuario = new ControlUsuario();
+        Usuario usuario = controlUsuario.obtenerUsuarioPorTelefono(telefono);
+
+        if (usuario == null) {
+            JOptionPane.showMessageDialog(this, "Usuario no encontrado.", "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (BCrypt.checkpw(contrasena, usuario.getContrasenaEncriptada())) {
+            // Inicio de sesión exitoso
+            JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso.", "Inicio de sesión", JOptionPane.INFORMATION_MESSAGE);
+
+            // Abrir la pantalla principal
+            PantallaPrincipal pantallaPrincipal = new PantallaPrincipal(usuario);
+            pantallaPrincipal.setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Contraseña incorrecta.", "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_botonIniciarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
