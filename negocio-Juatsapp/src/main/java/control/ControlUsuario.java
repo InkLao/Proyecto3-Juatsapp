@@ -40,6 +40,16 @@ public class ControlUsuario {
         }
     }
 
+    public Usuario obtenerUsuarioPorId(ObjectId id) {
+        try {
+            return usuarioDAO.encuentraUsuarioPorId(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error al obtener usuario por ID.");
+            return null;
+        }
+    }
+
     public void actualizarUsuario(Usuario usuario) {
         if (usuario.getContrasenaEncriptada() != null && !usuario.getContrasenaEncriptada().isEmpty()) {
             String contrasenaEncriptada = BCrypt.hashpw(usuario.getContrasenaEncriptada(), BCrypt.gensalt());
@@ -53,15 +63,4 @@ public class ControlUsuario {
             System.out.println("Error al actualizar usuario.");
         }
     }
-    
-    public Usuario obtenerUsuarioPorId(ObjectId id) {
-    try {
-        return usuarioDAO.encuentraUsuarioPorId(id);
-    } catch (Exception e) {
-        e.printStackTrace();
-        System.out.println("Error al obtener usuario por ID.");
-        return null;
-    }
-}
-
 }

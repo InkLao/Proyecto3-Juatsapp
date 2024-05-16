@@ -139,6 +139,7 @@ public class PantallaCrearChat extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonInsertarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonInsertarImagenActionPerformed
